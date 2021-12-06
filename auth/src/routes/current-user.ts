@@ -1,6 +1,5 @@
 import express, {Request, Response} from 'express'
 import {currentUser} from '@hawkab/common'
-// import {requireAuth} from '../middlewares/require-auth'
 
 const router = express.Router()
 
