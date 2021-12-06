@@ -13,7 +13,7 @@ const useRequest = ({url, method, body, onSuccess}) => {
       }
       return response.data
     } catch (err) {
-      console.log(err.response.data, '>>>>>>')
+      console.log(err.response, '>>>>>>')
       setErrors(
         <div>
           <ul>

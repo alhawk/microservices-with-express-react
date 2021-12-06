@@ -8,7 +8,7 @@ import {OrderCreatedPublisher} from '../events/publishers/order-created-publishe
 import {natsWrapper} from '../nats-wrapper'
 import { Ticket } from '../models/ticket'
 
-const EXPIRATION_WINDOW_SECONDS = 15 * 60
+const EXPIRATION_WINDOW_SECONDS = 1 * 60
 
 router.post('/api/orders', requireAuth,
   [
@@ -43,16 +43,17 @@ router.post('/api/orders', requireAuth,
         
     await order.save() 
 
-    // new OrderCreatedPublisher(natsWrapper.client).publish({
-    //   id: order.id,
-    //   status: order.status,
-    //   userId: order.userId,
-    //   expiresAt: order.expiresAt.toISOString(),
-    //   ticket: {
-    //     id: ticket.id,
-    //     price: ticket.price
-    //   }
-    // })
+    new OrderCreatedPublisher(natsWrapper.client).publish({
+      id: order.id,
+      //@ts-ignore
+      status: order.status,
+      userId: order.userId,
+      expiresAt: order.expiresAt.toISOString(),
+      ticket: {
+        id: ticket.id,
+        price: ticket.price
+      }
+    })
     res.status(201).send(order)
   }
 );
